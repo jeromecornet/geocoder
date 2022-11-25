@@ -742,9 +742,12 @@ This lookup provides methods for geocoding IP addresses without making a call to
     Geocoder.configure(
       ip_lookup: :geoip2,
       geoip2: {
-        file: File.join('folder', 'GeoLite2-City.mmdb')
+        file: File.join('folder', 'GeoLite2-City.mmdb'),
+        low_memory: false
       }
     )
+
+If you are using the maxminddb gem, you can optionally set the low_memory configuration to true use the low memory reader (slower)
 
 You must add either the *[hive_geoip2](https://rubygems.org/gems/hive_geoip2)* gem (native extension that relies on libmaxminddb) or the *[maxminddb](http://rubygems.org/gems/maxminddb)* gem (pure Ruby implementation) to your Gemfile or have it installed in your system. The pure Ruby gem (maxminddb) will be used by default. To use `hive_geoip2`:
 

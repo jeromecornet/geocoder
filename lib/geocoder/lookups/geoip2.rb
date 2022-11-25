@@ -15,7 +15,11 @@ module Geocoder
             raise "Could not load Maxmind DB dependency. To use the GeoIP2 lookup you must add the #{@gem_name} gem to your Gemfile or have it installed in your system."
           end
 
-          @mmdb = db_class.new(configuration[:file].to_s)
+          if configuration[:low_memory] && db_class.is_a?(MaxMindDB)
+            @mmdb = db_class.new(configuration[:file].to_s, MaxMindDB::LOW_MEMORY_FILE_READER)
+          else
+            @mmdb = db_class.new(configuration[:file].to_s)
+          end
         end
         super
       end

@@ -5,7 +5,7 @@ class Geoip2Test < GeocoderTestCase
 
   def setup
     super
-    Geocoder.configure(ip_lookup: :geoip2, file: 'test_file')
+    Geocoder.configure(ip_lookup: :geoip2, geoip2: {file: 'test_file'})
   end
 
   def test_result_attributes
@@ -51,4 +51,11 @@ class Geoip2Test < GeocoderTestCase
     assert_equal 'California', result.state
     assert_equal 'United States', result.country
   end
+
+  def test_low_memory
+    Geocoder.configure(ip_lookup: :geoip2, geoip2: { file: 'test_file', low_memory: true })
+    result = Geocoder.search('8.8.8.8').first
+    assert_equal [37.41919999999999, -122.0574], result.coordinates
+  end
+  
 end
